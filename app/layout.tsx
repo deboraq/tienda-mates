@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Matería Criolla | Los mejores mates de Córdoba",
+  title: "Matería Criolla | Córdoba",
   description: "Tienda artesanal de mates imperiales y termos",
 };
 
