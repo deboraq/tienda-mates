@@ -7,9 +7,8 @@ import confetti from "canvas-confetti";
 export default function Home() {
   const [carrito, setCarrito] = useState<any[]>([]);
   const [mostrarResumen, setMostrarResumen] = useState(false);
-  const [busqueda, setBusqueda] = useState(""); // Estado para el buscador
+  const [busqueda, setBusqueda] = useState("");
 
-  // Lógica de filtrado de productos
   const productosFiltrados = PRODUCTS.filter(p => 
     p.name.toLowerCase().includes(busqueda.toLowerCase()) || 
     p.description.toLowerCase().includes(busqueda.toLowerCase())
@@ -36,116 +35,163 @@ export default function Home() {
     if (carrito.length === 0) return;
     const numeroTelefono = "5493515416836"; 
     const listaProductos = carrito.map(item => `- ${item.name} ($${item.price})`).join("%0A");
-    const mensaje = `¡Hola! Quiero realizar un pedido en *Nómade Mates*:%0A%0A${listaProductos}%0A%0A*Total: $${totalPrecio}*%0A%0A¿Cómo coordinamos el pago y envío?`;
+    const mensaje = `¡Hola! Quiero realizar un pedido en *Nómade Mates*:%0A%0A${listaProductos}%0A%0A*Total: $${totalPrecio}*%0A%0A¿Cómo coordinamos el pago?`;
     window.open(`https://wa.me/${numeroTelefono}?text=${mensaje}`, "_blank");
   };
 
   return (
-    <main className="min-h-screen bg-[#fdfcf0] pb-20 font-sans">
-      {/* Navbar con "Tu Carrito" */}
-      <nav className="bg-[#4a5d23] text-white p-6 shadow-md flex justify-between items-center sticky top-0 z-50">
-        <h1 className="text-2xl font-bold font-serif tracking-tight">🍂 Nómade Mates</h1>
-        <button 
-          onClick={() => setMostrarResumen(!mostrarResumen)}
-          className="bg-white text-[#4a5d23] px-5 py-2 rounded-full font-bold shadow-md active:scale-90 transition-all flex items-center gap-2"
-        >
-          🛒 Tu Carrito ({carrito.length})
-        </button>
+    <main className="min-h-screen bg-[#fdfcf0] pb-20 font-sans text-gray-800">
+      {/* --- NAVBAR --- */}
+      <nav className="bg-[#4a5d23] text-white p-4 shadow-md sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto flex justify-between items-center">
+          <h1 className="text-xl md:text-2xl font-bold font-serif">🍂 Nómade Mates</h1>
+          <div className="hidden md:flex gap-6 text-sm uppercase tracking-widest font-medium">
+            <a href="#productos" className="hover:text-amber-200">Productos</a>
+            <a href="#promos" className="hover:text-amber-200">Promos</a>
+            <a href="#nosotros" className="hover:text-amber-200">Nosotros</a>
+            <a href="#contacto" className="hover:text-amber-200">Contacto</a>
+          </div>
+          <button 
+            onClick={() => setMostrarResumen(!mostrarResumen)}
+            className="bg-white text-[#4a5d23] px-4 py-2 rounded-full font-bold shadow-md text-sm"
+          >
+            🛒 Tu Carrito ({carrito.length})
+          </button>
+        </div>
       </nav>
 
       {/* Carrito flotante */}
       {mostrarResumen && (
-        <div className="fixed inset-x-4 top-24 md:left-auto md:right-6 md:w-80 bg-white shadow-2xl rounded-2xl p-6 z-[60] border border-gray-100">
-          <div className="flex justify-between items-center mb-4 border-b pb-2 text-gray-800 font-bold text-lg">
+        <div className="fixed inset-x-4 top-20 md:left-auto md:right-6 md:w-80 bg-white shadow-2xl rounded-2xl p-6 z-[60] border border-gray-100 animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="flex justify-between items-center mb-4 border-b pb-2 font-bold text-lg">
             <span>Tu Pedido</span>
-            <button onClick={() => setMostrarResumen(false)} className="text-gray-400 p-2">✕</button>
+            <button onClick={() => setMostrarResumen(false)} className="text-gray-400">✕</button>
           </div>
           {carrito.length === 0 ? (
-            <p className="text-gray-500 text-center py-4 italic">El carrito está vacío...</p>
+            <p className="text-gray-500 text-center py-4 italic">Tu carrito está esperando un mate...</p>
           ) : (
             <>
               <div className="max-h-60 overflow-y-auto mb-4 space-y-2">
                 {carrito.map((item, index) => (
-                  <div key={index} className="flex justify-between items-center text-sm border-b border-gray-50 pb-2">
-                    <div className="flex flex-col">
-                      <span className="text-gray-600 font-medium">{item.name}</span>
-                      <span className="font-bold text-gray-800">${item.price.toLocaleString('es-AR')}</span>
+                  <div key={index} className="flex justify-between items-center text-sm border-b pb-2">
+                    <span>{item.name}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold">${item.price.toLocaleString('es-AR')}</span>
+                      <button onClick={() => eliminarDelCarrito(index)}>🗑️</button>
                     </div>
-                    <button onClick={() => eliminarDelCarrito(index)} className="text-xl p-2">🗑️</button>
                   </div>
                 ))}
               </div>
-              <div className="flex justify-between items-center text-xl font-black text-[#4a5d23] pt-2 mb-6">
-                <span>TOTAL:</span>
-                <span>${totalPrecio.toLocaleString('es-AR')}</span>
-              </div>
-              <button onClick={finalizarPedido} className="w-full bg-[#4a5d23] text-white py-4 rounded-xl font-bold active:bg-[#3a4a1c] shadow-lg">
-                Finalizar en WhatsApp
-              </button>
+              <div className="text-xl font-black text-[#4a5d23] mb-4">TOTAL: ${totalPrecio.toLocaleString('es-AR')}</div>
+              <button onClick={finalizarPedido} className="w-full bg-[#4a5d23] text-white py-4 rounded-xl font-bold">Enviar WhatsApp</button>
             </>
           )}
         </div>
       )}
 
-      {/* Header */}
-      <header className="py-16 text-center px-4">
-        <h2 className="text-5xl md:text-6xl font-bold text-gray-800 mb-4 tracking-tight">Nómade Mates</h2>
-        <p className="text-xl md:text-2xl text-gray-600 italic font-medium">"Uniendo rincones, cebando historias"</p>
+      {/* --- HERO / HEADER --- */}
+      <header className="py-20 text-center bg-white border-b border-gray-100">
+        <h2 className="text-6xl md:text-8xl font-bold text-gray-800 mb-4 tracking-tighter">Nómade Mates</h2>
+        <p className="text-xl md:text-2xl text-gray-500 italic">"Uniendo rincones, cebando historias"</p>
       </header>
 
-      {/* Buscador con Lupa */}
-      <section className="max-w-xl mx-auto px-4 mb-12">
+      {/* --- SECCIÓN PERSONALIZADOS --- */}
+      <section className="bg-amber-50 py-12 text-center border-y border-amber-100">
+        <h3 className="text-2xl font-bold mb-2">✨ Personalizá tu producto</h3>
+        <p className="text-gray-600 px-4">Grabados láser, nombres y logos. ¡Hacé que tu mate sea único!</p>
+        <button className="mt-4 bg-[#8b4513] text-white px-8 py-3 rounded-full font-bold hover:scale-105 transition-transform">Consultar por grabados</button>
+      </section>
+
+      {/* --- BUSCADOR --- */}
+      <section id="productos" className="max-w-xl mx-auto px-4 mt-16 mb-8">
         <div className="relative">
-          <span className="absolute inset-y-0 left-4 flex items-center text-gray-400">
-            🔍
-          </span>
+          <span className="absolute inset-y-0 left-4 flex items-center">🔍</span>
           <input 
-            type="text"
-            placeholder="¿Qué estás buscando?"
-            value={busqueda}
+            type="text" 
+            placeholder="¿Qué estás buscando? (Mates, bombillas, sets...)" 
+            className="w-full pl-12 pr-4 py-4 rounded-2xl border-2 border-gray-100 focus:border-[#4a5d23] outline-none shadow-sm"
             onChange={(e) => setBusqueda(e.target.value)}
-            className="w-full pl-12 pr-4 py-4 rounded-2xl border-2 border-gray-100 bg-white shadow-sm focus:border-[#4a5d23] focus:outline-none transition-all text-gray-800"
           />
         </div>
       </section>
 
-      {/* Catálogo Filtrado */}
-      <section className="max-w-6xl mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-8">
-        {productosFiltrados.length > 0 ? (
-          productosFiltrados.map((producto) => (
-            <div key={producto.id} className="bg-white rounded-[2rem] overflow-hidden shadow-xl border border-gray-100 flex flex-col hover:shadow-2xl transition-all duration-300">
-              <div className="h-64 overflow-hidden">
-                <img src={producto.image} alt={producto.name} className="w-full h-full object-cover" />
-              </div>
-              <div className="p-6 text-center flex-grow flex flex-col justify-between">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">{producto.name}</h3>
-                  <p className="text-gray-500 text-xs mb-4">{producto.description}</p>
-                  <p className="text-3xl font-black text-[#4a5d23] mb-6">${producto.price.toLocaleString('es-AR')}</p>
-                </div>
-                <button onClick={() => agregarAlCarrito(producto)} className="w-full bg-[#4a5d23] text-white py-4 rounded-2xl font-bold active:scale-95 transition-all shadow-md">
-                  Agregar al Carrito
-                </button>
-              </div>
+      {/* --- CATÁLOGO --- */}
+      <section className="max-w-6xl mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+        {productosFiltrados.map((producto) => (
+          <div key={producto.id} className="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 flex flex-col hover:shadow-2xl transition-all">
+            <div className="h-64 bg-gray-50 flex items-center justify-center overflow-hidden">
+              <img src={producto.image} alt={producto.name} className="w-full h-full object-cover" />
             </div>
-          ))
-        ) : (
-          <div className="col-span-full text-center py-10">
-            <p className="text-gray-500 text-lg italic">No encontramos productos que coincidan con tu búsqueda...</p>
+            <div className="p-6 text-center flex-grow flex flex-col justify-between">
+              <div>
+                <h4 className="text-xl font-bold mb-2">{producto.name}</h4>
+                <p className="text-gray-500 text-sm mb-4">{producto.description}</p>
+                <p className="text-3xl font-black text-[#4a5d23] mb-6">${producto.price.toLocaleString('es-AR')}</p>
+              </div>
+              <button onClick={() => agregarAlCarrito(producto)} className="w-full bg-[#4a5d23] text-white py-3 rounded-2xl font-bold active:scale-95 transition-transform">Agregar al Carrito</button>
+            </div>
           </div>
-        )}
+        ))}
       </section>
 
-      {/* Botón WhatsApp Flotante */}
+      {/* --- SECCIÓN QUIÉNES SOMOS --- */}
+      <section id="nosotros" className="bg-[#4a5d23] text-white py-20 px-6">
+        <div className="max-w-3xl mx-auto text-center">
+          <h3 className="text-4xl font-serif font-bold mb-6">Quiénes Somos</h3>
+          <p className="text-lg leading-relaxed opacity-90">
+            Somos apasionados de la cultura matera nacidos en Córdoba. En Nómade Mates seleccionamos los mejores cueros y maderas para que cada cebada sea un momento especial. No solo vendemos mates, compartimos historias.
+          </p>
+        </div>
+      </section>
+
+      {/* --- PREGUNTAS FRECUENTES --- */}
+      <section className="max-w-4xl mx-auto py-20 px-6">
+        <h3 className="text-3xl font-bold text-center mb-12">Preguntas Frecuentes</h3>
+        <div className="space-y-6">
+          <div className="border-b pb-4">
+            <h4 className="font-bold text-lg mb-2">¿Cómo comprar?</h4>
+            <p className="text-gray-600 text-sm">Elegí tus productos, agregalos al carrito y finalizá el pedido por WhatsApp. Coordinamos pago y envío por ahí.</p>
+          </div>
+          <div className="border-b pb-4">
+            <h4 className="font-bold text-lg mb-2">Envíos</h4>
+            <p className="text-gray-600 text-sm">Hacemos envíos a todo el país a través de Correo Argentino y cadetería privada en Córdoba Capital.</p>
+          </div>
+          <div className="border-b pb-4">
+            <h4 className="font-bold text-lg mb-2">Cambios y Devoluciones</h4>
+            <p className="text-gray-600 text-sm">Tenés 15 días para realizar cambios por fallas de fábrica. El producto debe estar sin curar/uso.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* --- FOOTER / CONTACTO --- */}
+      <footer id="contacto" className="bg-white border-t border-gray-100 py-16 px-6">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+          <div>
+            <h4 className="font-bold mb-4 text-xl">Contacto</h4>
+            <p className="text-gray-600">WhatsApp: +54 9 351 541-6836</p>
+            <p className="text-gray-600">Email: hola@nomademates.com</p>
+          </div>
+          <div>
+            <h4 className="font-bold mb-4 text-xl">Redes Sociales</h4>
+            <div className="flex justify-center md:justify-start gap-4">
+              <span className="bg-gray-100 p-2 rounded-lg cursor-pointer hover:bg-amber-100 transition-colors">Instagram</span>
+              <span className="bg-gray-100 p-2 rounded-lg cursor-pointer hover:bg-amber-100 transition-colors">Facebook</span>
+            </div>
+          </div>
+          <div>
+            <h4 className="font-bold mb-4 text-xl">Nómade Mates</h4>
+            <p className="text-gray-500 text-sm">© 2026 - De Córdoba para el mundo.</p>
+          </div>
+        </div>
+      </footer>
+
+      {/* Botón Flotante Fijo WhatsApp */}
       <a
-        href="https://wa.me/5493515416836?text=Hola!%20Tengo%20una%20consulta"
+        href="https://wa.me/5493515416836"
         target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 left-6 bg-[#25d366] text-white p-4 rounded-full shadow-2xl active:scale-110 z-[100]"
+        className="fixed bottom-6 left-6 bg-[#25d366] text-white p-4 rounded-full shadow-2xl z-[100]"
       >
-        <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-        </svg>
+        WS
       </a>
     </main>
   );
