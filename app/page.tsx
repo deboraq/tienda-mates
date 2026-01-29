@@ -41,14 +41,13 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#fdfcf0] pb-20 font-sans text-gray-800">
-      {/* --- NAVBAR CON BUSCADOR EN LA "X" --- */}
+      {/* --- NAVBAR --- */}
       <nav className="bg-[#4a5d23] text-white p-4 shadow-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
           
           <div className="flex items-center gap-4">
             <h1 className="text-xl md:text-2xl font-bold font-serif whitespace-nowrap">🍂 Nómade Mates</h1>
             
-            {/* Buscador Versión Desktop (Cerca del logo) */}
             <div className="hidden lg:relative lg:block">
               <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">🔍</span>
               <input 
@@ -68,7 +67,6 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-3">
-             {/* Buscador Versión Mobile (Aparece al lado del carrito en pantallas chicas) */}
              <div className="relative block lg:hidden w-32 md:w-48">
               <input 
                 type="text" 
@@ -120,7 +118,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* --- HEADER LIMPIO --- */}
+      {/* --- HEADER --- */}
       <header className="py-20 text-center bg-white border-b border-gray-100">
         <h2 className="text-6xl md:text-8xl font-bold text-gray-800 mb-4 tracking-tighter">Nómade Mates</h2>
         <p className="text-xl md:text-2xl text-gray-500 italic">"Uniendo rincones, cebando historias"</p>
@@ -135,7 +133,7 @@ export default function Home() {
         </button>
       </section>
 
-      {/* --- CATÁLOGO FILTRADO --- */}
+      {/* --- CATÁLOGO --- */}
       <section id="productos" className="max-w-6xl mx-auto p-4 pt-16 grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
         {productosFiltrados.map((producto) => (
           <div key={producto.id} className="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 flex flex-col hover:shadow-2xl transition-all">
@@ -161,12 +159,12 @@ export default function Home() {
         )}
       </section>
 
-      {/* --- SECCIÓN QUIÉNES SOMOS --- */}
+      {/* --- NUESTRA ESENCIA (ACTUALIZADO) --- */}
       <section id="nosotros" className="bg-[#4a5d23] text-white py-20 px-6">
-        <div className="max-w-3xl mx-auto text-center">
-          <h3 className="text-4xl font-serif font-bold mb-6">Quiénes Somos</h3>
-          <p className="text-lg leading-relaxed opacity-90 italic">
-            "Somos apasionados de la cultura matera nacidos en Córdoba. En Nómade Mates seleccionamos los mejores cueros y maderas para que cada cebada sea un momento especial."
+        <div className="max-w-4xl mx-auto text-center">
+          <h3 className="text-4xl font-serif font-bold mb-8">Nuestra Esencia</h3>
+          <p className="text-xl md:text-2xl leading-relaxed opacity-90 italic font-light px-4">
+            "Somos apasionados de la cultura matera nacidos en Córdoba. En Nómade, creemos que el mate es el único objeto capaz de habitar dos lugares al mismo tiempo: el rincón donde estamos y la historia que estamos construyendo."
           </p>
         </div>
       </section>
@@ -175,25 +173,25 @@ export default function Home() {
       <footer id="contacto" className="bg-white border-t border-gray-100 py-16 px-6 text-center md:text-left">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
           <div>
-            <h4 className="font-bold mb-4 text-xl">Contacto</h4>
+            <h4 className="font-bold mb-4 text-xl text-[#4a5d23]">Contacto</h4>
             <p className="text-gray-600">WhatsApp: +54 9 351 541-6836</p>
             <p className="text-gray-600">Email: hola@nomademates.com</p>
           </div>
           <div>
-            <h4 className="font-bold mb-4 text-xl">Redes Sociales</h4>
+            <h4 className="font-bold mb-4 text-xl text-[#4a5d23]">Redes Sociales</h4>
             <div className="flex justify-center md:justify-start gap-4">
               <a href="#" className="bg-gray-100 p-2 rounded-lg hover:bg-amber-100 transition-colors">Instagram</a>
               <a href="#" className="bg-gray-100 p-2 rounded-lg hover:bg-amber-100 transition-colors">Facebook</a>
             </div>
           </div>
           <div>
-            <h4 className="font-bold mb-4 text-xl">Nómade Mates</h4>
+            <h4 className="font-bold mb-4 text-xl text-[#4a5d23]">Nómade Mates</h4>
             <p className="text-gray-500 text-sm">© 2026 - De Córdoba para el mundo.</p>
           </div>
         </div>
       </footer>
 
-      {/* Botón Flotante WhatsApp */}
+      {/* Botón WhatsApp */}
       <a
         href="https://wa.me/5493515416836"
         target="_blank"
