@@ -59,8 +59,6 @@ export default function Home() {
 
           <div className="hidden md:flex gap-6 text-xs uppercase tracking-widest font-medium">
             <button onClick={() => setVerTienda(false)} className="hover:text-amber-200 uppercase transition-colors">Inicio</button>
-            
-            {/* BOTÓN NOSOTROS */}
             <a href="#nosotros" onClick={() => setVerTienda(false)} className="hover:text-amber-200 transition-colors uppercase">Nosotros</a>
             
             <div className="relative">
@@ -120,16 +118,14 @@ export default function Home() {
         </div>
       )}
 
-      {/* --- CONTENIDO DINÁMICO --- */}
+      {/* --- CONTENIDO --- */}
       {!verTienda ? (
-        /* VISTA HOME: Aquí está TODO lo que me pediste */
         <>
           <header className="py-20 text-center bg-white border-b border-gray-100">
             <h2 className="text-6xl md:text-8xl font-bold text-gray-800 mb-4 tracking-tighter">Nómade Mates</h2>
             <p className="text-xl md:text-2xl text-gray-500 italic">"Uniendo rincones, cebando historias"</p>
           </header>
 
-          {/* PERSONALIZADOS */}
           <section className="bg-amber-50 py-12 text-center border-y border-amber-100">
             <h3 className="text-2xl font-bold mb-2">✨ Personalizá tu producto</h3>
             <p className="text-gray-600 px-4">Grabados láser, nombres y logos. ¡Hacé que tu mate sea único!</p>
@@ -138,7 +134,6 @@ export default function Home() {
             </button>
           </section>
 
-          {/* PRODUCTOS DESTACADOS */}
           <section id="destacados" className="max-w-6xl mx-auto p-4 pt-16 text-center">
             <h3 className="text-3xl font-bold mb-10">🔥 Productos Destacados</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -147,7 +142,7 @@ export default function Home() {
                   <img src={producto.image} className="h-48 w-full object-cover rounded-2xl mb-4" />
                   <h4 className="text-xl font-bold">{producto.name}</h4>
                   <p className="text-2xl font-black text-[#4a5d23] my-4">${producto.price.toLocaleString('es-AR')}</p>
-                  <button onClick={() => agregarAlCarrito(producto)} className="w-full bg-[#4a5d23] text-white py-2 rounded-xl font-bold">Agregar al Carrito</button>
+                  <button onClick={() => agregarAlCarrito(producto)} className="w-full bg-[#4a5d23] text-white py-2 rounded-xl font-bold active:scale-95 transition-all">Agregar al Carrito</button>
                 </div>
               ))}
             </div>
@@ -159,7 +154,6 @@ export default function Home() {
             </button>
           </section>
 
-          {/* NUESTRA ESENCIA / QUIÉNES SOMOS */}
           <section id="nosotros" className="bg-[#4a5d23] text-white py-20 px-6 mt-20">
             <div className="max-w-4xl mx-auto text-center">
               <h3 className="text-4xl font-serif font-bold mb-8">Nuestra Esencia</h3>
@@ -170,7 +164,6 @@ export default function Home() {
           </section>
         </>
       ) : (
-        /* VISTA TIENDA COMPLETA */
         <section id="productos" className="max-w-6xl mx-auto p-4 pt-16 min-h-screen">
           <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-4">
             <button onClick={() => setVerTienda(false)} className="text-[#4a5d23] font-bold flex items-center gap-2 hover:underline">
@@ -181,12 +174,13 @@ export default function Home() {
               <input 
                 type="text" 
                 placeholder="Buscar en la tienda..." 
-                className="w-full pl-10 pr-4 py-2.5 rounded-full border-2 border-gray-200 outline-none focus:border-[#4a5d23]"
+                className="w-full pl-10 pr-4 py-2.5 rounded-full border-2 border-gray-200 outline-none focus:border-[#4a5d23] transition-all"
                 onChange={(e) => setBusqueda(e.target.value)}
               />
             </div>
           </div>
           <h3 className="text-4xl font-bold mb-8 text-gray-800">Catálogo: {categoriaSeleccionada}</h3>
+          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
             {productosFiltrados.map((producto) => (
               <div key={producto.id} className="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 flex flex-col hover:shadow-2xl transition-all">
@@ -199,15 +193,28 @@ export default function Home() {
                     <p className="text-gray-500 text-sm mb-4">{producto.description}</p>
                     <p className="text-3xl font-black text-[#4a5d23] mb-6">${producto.price.toLocaleString('es-AR')}</p>
                   </div>
-                  <button onClick={() => agregarAlCarrito(producto)} className="w-full bg-[#4a5d23] text-white py-3 rounded-2xl font-bold">Agregar al Carrito</button>
+                  <button onClick={() => agregarAlCarrito(producto)} className="w-full bg-[#4a5d23] text-white py-3 rounded-2xl font-bold shadow-md active:scale-95 transition-all">Agregar al Carrito</button>
                 </div>
               </div>
             ))}
           </div>
+
+          {/* --- MENSAJE CUANDO NO HAY PRODUCTOS (RESTAURADO) --- */}
+          {productosFiltrados.length === 0 && (
+            <div className="col-span-full text-center py-20 bg-white rounded-3xl border-2 border-dashed border-gray-100">
+               <p className="text-gray-500 text-xl italic mb-4">No encontramos productos en "{categoriaSeleccionada}".</p>
+               <button 
+                 onClick={() => {setCategoriaSeleccionada("Todos"); setBusqueda("");}}
+                 className="bg-[#4a5d23] text-white px-6 py-2 rounded-full font-bold hover:bg-[#3a4a1c] transition-colors"
+               >
+                 Ver todos los productos
+               </button>
+            </div>
+          )}
         </section>
       )}
 
-      {/* PREGUNTAS FRECUENTES (SIEMPRE VISIBLES) */}
+      {/* PREGUNTAS FRECUENTES */}
       <section className="max-w-4xl mx-auto py-20 px-6">
         <h3 className="text-3xl font-bold text-center mb-12">Preguntas Frecuentes</h3>
         <div className="space-y-6">
@@ -222,7 +229,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FOOTER COMPLETO */}
+      {/* FOOTER */}
       <footer id="contacto" className="bg-white border-t border-gray-100 py-16 px-6">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
           <div>
@@ -233,13 +240,13 @@ export default function Home() {
           <div>
             <h4 className="font-bold mb-4 text-xl text-[#4a5d23]">Redes Sociales</h4>
             <div className="flex justify-center md:justify-start gap-4">
-              <a href="https://instagram.com/nomademates" target="_blank" className="bg-gray-100 p-2 rounded-lg hover:bg-amber-100 transition-colors">Instagram</a>
-              <a href="https://facebook.com/nomademates" target="_blank" className="bg-gray-100 p-2 rounded-lg hover:bg-amber-100 transition-colors">Facebook</a>
+              <a href="https://instagram.com/nomademates" target="_blank" className="bg-gray-100 p-2 rounded-lg hover:bg-amber-100 transition-colors font-medium">Instagram</a>
+              <a href="https://facebook.com/nomademates" target="_blank" className="bg-gray-100 p-2 rounded-lg hover:bg-amber-100 transition-colors font-medium">Facebook</a>
             </div>
           </div>
           <div>
             <h4 className="font-bold mb-4 text-xl text-[#4a5d23]">Nómade Mates</h4>
-            <p className="text-gray-500 text-sm">© 2026 - De Córdoba para el mundo.</p>
+            <p className="text-gray-500 text-sm">© 2026 - Córdoba, Argentina.</p>
           </div>
         </div>
       </footer>
