@@ -8,11 +8,19 @@ export default function Home() {
   const [carrito, setCarrito] = useState<any[]>([]);
   const [mostrarResumen, setMostrarResumen] = useState(false);
   const [busqueda, setBusqueda] = useState("");
+  // NUEVOS ESTADOS PARA CATEGORÍAS
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todos");
+  const [mostrarCategorias, setMostrarCategorias] = useState(false);
 
-  const productosFiltrados = PRODUCTS.filter(p => 
-    p.name.toLowerCase().includes(busqueda.toLowerCase()) || 
-    p.description.toLowerCase().includes(busqueda.toLowerCase())
-  );
+  const categorias = ["Todos", "Mates", "Bombillas", "Yerberas", "Set Materos", "Despolvillador"];
+
+  // FILTRADO DOBLE: Por búsqueda Y por categoría
+  const productosFiltrados = PRODUCTS.filter(p => {
+    const coincideBusqueda = p.name.toLowerCase().includes(busqueda.toLowerCase()) || 
+                             p.description.toLowerCase().includes(busqueda.toLowerCase());
+    const coincideCategoria = categoriaSeleccionada === "Todos" || p.category === categoriaSeleccionada;
+    return coincideBusqueda && coincideCategoria;
+  });
 
   const agregarAlCarrito = (producto: any) => {
     setCarrito([...carrito, producto]);
@@ -47,7 +55,6 @@ export default function Home() {
           
           <div className="flex items-center gap-4">
             <h1 className="text-xl md:text-2xl font-bold font-serif whitespace-nowrap">🍂 Nómade Mates</h1>
-            
             <div className="hidden lg:relative lg:block">
               <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">🔍</span>
               <input 
@@ -62,7 +69,34 @@ export default function Home() {
           <div className="hidden md:flex gap-6 text-xs uppercase tracking-widest font-medium">
             <a href="#nosotros" className="hover:text-amber-200 transition-colors">Nosotros</a>
             <a href="#promos" className="hover:text-amber-200 transition-colors">Promos</a>
-            <a href="#productos" className="hover:text-amber-200 transition-colors">Productos</a>
+            
+            {/* PRODUCTOS CON DESPLEGABLE (Agregado aquí) */}
+            <div className="relative">
+              <button 
+                onClick={() => setMostrarCategorias(!mostrarCategorias)}
+                className="hover:text-amber-200 transition-colors flex items-center gap-1 uppercase tracking-widest outline-none"
+              >
+                Productos {mostrarCategorias ? '▴' : '▾'}
+              </button>
+              
+              {mostrarCategorias && (
+                <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-50 text-gray-800 normal-case tracking-normal font-sans">
+                  {categorias.map((cat) => (
+                    <button
+                      key={cat}
+                      className={`w-full text-left px-5 py-3 text-sm hover:bg-amber-50 transition-colors ${categoriaSeleccionada === cat ? 'bg-amber-100 font-bold text-[#4a5d23]' : ''}`}
+                      onClick={() => {
+                        setCategoriaSeleccionada(cat);
+                        setMostrarCategorias(false);
+                      }}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <a href="#contacto" className="hover:text-amber-200 transition-colors">Contacto</a>
           </div>
 
@@ -122,6 +156,12 @@ export default function Home() {
       <header className="py-20 text-center bg-white border-b border-gray-100">
         <h2 className="text-6xl md:text-8xl font-bold text-gray-800 mb-4 tracking-tighter">Nómade Mates</h2>
         <p className="text-xl md:text-2xl text-gray-500 italic">"Uniendo rincones, cebando historias"</p>
+        {/* Indicador de categoría activa */}
+        {categoriaSeleccionada !== "Todos" && (
+          <p className="mt-4 text-[#4a5d23] font-bold uppercase tracking-widest text-sm animate-pulse">
+            Filtrando por: {categoriaSeleccionada}
+          </p>
+        )}
       </header>
 
       {/* --- SECCIÓN PERSONALIZADOS --- */}
@@ -133,7 +173,7 @@ export default function Home() {
         </button>
       </section>
 
-      {/* --- CATÁLOGO --- */}
+      {/* --- CATÁLOGO FILTRADO --- */}
       <section id="productos" className="max-w-6xl mx-auto p-4 pt-16 grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
         {productosFiltrados.map((producto) => (
           <div key={producto.id} className="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 flex flex-col hover:shadow-2xl transition-all">
@@ -153,13 +193,19 @@ export default function Home() {
           </div>
         ))}
         {productosFiltrados.length === 0 && (
-          <p className="col-span-full text-center text-gray-500 italic py-10 text-xl">
-             No encontramos "{busqueda}". ¡Probá con otra palabra!
-          </p>
+          <div className="col-span-full text-center py-20">
+             <p className="text-gray-500 text-xl italic mb-4">No encontramos lo que buscás.</p>
+             <button 
+               onClick={() => {setCategoriaSeleccionada("Todos"); setBusqueda("");}}
+               className="text-[#4a5d23] font-bold underline"
+             >
+               Ver todos los productos
+             </button>
+          </div>
         )}
       </section>
 
-      {/* --- NUESTRA ESENCIA (ACTUALIZADO) --- */}
+      {/* --- NUESTRA ESENCIA --- */}
       <section id="nosotros" className="bg-[#4a5d23] text-white py-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h3 className="text-4xl font-serif font-bold mb-8">Nuestra Esencia</h3>
