@@ -8,13 +8,12 @@ export default function Home() {
   const [carrito, setCarrito] = useState<any[]>([]);
   const [mostrarResumen, setMostrarResumen] = useState(false);
   const [busqueda, setBusqueda] = useState("");
-  // NUEVOS ESTADOS PARA CATEGORÍAS
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todos");
   const [mostrarCategorias, setMostrarCategorias] = useState(false);
 
-  const categorias = ["Todos", "Mates", "Bombillas", "Yerberas", "Set Materos", "Despolvillador"];
+  // LISTA ACTUALIZADA: Asegurate que diga "Termos" exactamente así
+  const categorias = ["Todos", "Mates", "Termos", "Bombillas", "Yerberas", "Set Materos", "Despolvillador"];
 
-  // FILTRADO DOBLE: Por búsqueda Y por categoría
   const productosFiltrados = PRODUCTS.filter(p => {
     const coincideBusqueda = p.name.toLowerCase().includes(busqueda.toLowerCase()) || 
                              p.description.toLowerCase().includes(busqueda.toLowerCase());
@@ -70,7 +69,7 @@ export default function Home() {
             <a href="#nosotros" className="hover:text-amber-200 transition-colors">Nosotros</a>
             <a href="#promos" className="hover:text-amber-200 transition-colors">Promos</a>
             
-            {/* PRODUCTOS CON DESPLEGABLE (Agregado aquí) */}
+            {/* PRODUCTOS CON DESPLEGABLE */}
             <div className="relative">
               <button 
                 onClick={() => setMostrarCategorias(!mostrarCategorias)}
@@ -88,6 +87,8 @@ export default function Home() {
                       onClick={() => {
                         setCategoriaSeleccionada(cat);
                         setMostrarCategorias(false);
+                        // Esto hace que la página baje sola a los productos:
+                        document.getElementById('productos')?.scrollIntoView({ behavior: 'smooth' });
                       }}
                     >
                       {cat}
@@ -121,9 +122,9 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Carrito flotante */}
+      {/* Carrito flotante (Mantengo tu lógica intacta) */}
       {mostrarResumen && (
-        <div className="fixed inset-x-4 top-20 md:left-auto md:right-6 md:w-80 bg-white shadow-2xl rounded-2xl p-6 z-[60] border border-gray-100 animate-in fade-in slide-in-from-top-4 duration-300">
+        <div className="fixed inset-x-4 top-20 md:left-auto md:right-6 md:w-80 bg-white shadow-2xl rounded-2xl p-6 z-[60] border border-gray-100">
           <div className="flex justify-between items-center mb-4 border-b pb-2 font-bold text-lg">
             <span>Tu Pedido</span>
             <button onClick={() => setMostrarResumen(false)} className="text-gray-400">✕</button>
@@ -156,9 +157,8 @@ export default function Home() {
       <header className="py-20 text-center bg-white border-b border-gray-100">
         <h2 className="text-6xl md:text-8xl font-bold text-gray-800 mb-4 tracking-tighter">Nómade Mates</h2>
         <p className="text-xl md:text-2xl text-gray-500 italic">"Uniendo rincones, cebando historias"</p>
-        {/* Indicador de categoría activa */}
         {categoriaSeleccionada !== "Todos" && (
-          <p className="mt-4 text-[#4a5d23] font-bold uppercase tracking-widest text-sm animate-pulse">
+          <p className="mt-4 text-[#4a5d23] font-bold uppercase tracking-widest text-sm bg-amber-50 inline-block px-4 py-1 rounded-full">
             Filtrando por: {categoriaSeleccionada}
           </p>
         )}
@@ -194,7 +194,7 @@ export default function Home() {
         ))}
         {productosFiltrados.length === 0 && (
           <div className="col-span-full text-center py-20">
-             <p className="text-gray-500 text-xl italic mb-4">No encontramos lo que buscás.</p>
+             <p className="text-gray-500 text-xl italic mb-4">No encontramos lo que buscás en {categoriaSeleccionada}.</p>
              <button 
                onClick={() => {setCategoriaSeleccionada("Todos"); setBusqueda("");}}
                className="text-[#4a5d23] font-bold underline"
@@ -210,25 +210,17 @@ export default function Home() {
         <div className="max-w-4xl mx-auto text-center">
           <h3 className="text-4xl font-serif font-bold mb-8">Nuestra Esencia</h3>
           <p className="text-xl md:text-2xl leading-relaxed opacity-90 italic font-light px-4">
-            "Somos apasionados de la cultura matera nacidos en Córdoba. En Nómade, creemos que el mate es el único objeto capaz de habitar dos lugares al mismo tiempo: el rincón donde estamos y la historia que estamos construyendo."
+            "Somos apasionados de la cultura matera nacidos en Córdoba. En Nómade, creemos que el mate es el único objeto capaz de habitar dos lugares al mismo tiempo..."
           </p>
         </div>
       </section>
 
-      {/* --- FOOTER / CONTACTO --- */}
+      {/* --- FOOTER --- */}
       <footer id="contacto" className="bg-white border-t border-gray-100 py-16 px-6 text-center md:text-left">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
           <div>
             <h4 className="font-bold mb-4 text-xl text-[#4a5d23]">Contacto</h4>
             <p className="text-gray-600">WhatsApp: +54 9 351 541-6836</p>
-            <p className="text-gray-600">Email: hola@nomademates.com</p>
-          </div>
-          <div>
-            <h4 className="font-bold mb-4 text-xl text-[#4a5d23]">Redes Sociales</h4>
-            <div className="flex justify-center md:justify-start gap-4">
-              <a href="#" className="bg-gray-100 p-2 rounded-lg hover:bg-amber-100 transition-colors">Instagram</a>
-              <a href="#" className="bg-gray-100 p-2 rounded-lg hover:bg-amber-100 transition-colors">Facebook</a>
-            </div>
           </div>
           <div>
             <h4 className="font-bold mb-4 text-xl text-[#4a5d23]">Nómade Mates</h4>
