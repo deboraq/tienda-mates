@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { PRODUCTS } from "../data/products";
-import confetti from "canvas-confetti"; // Importamos la magia
+import confetti from "canvas-confetti";
 
 export default function Home() {
   const [carrito, setCarrito] = useState<any[]>([]);
@@ -10,14 +10,17 @@ export default function Home() {
 
   const agregarAlCarrito = (producto: any) => {
     setCarrito([...carrito, producto]);
-    
-    // --- LÓGICA DE CONFETI ---
     confetti({
       particleCount: 100,
       spread: 70,
       origin: { y: 0.8 },
-      colors: ['#4a5d23', '#25d366', '#fdfcf0'] // Colores de tu marca
+      colors: ['#4a5d23', '#25d366', '#fdfcf0']
     });
+  };
+
+  // --- NUEVA FUNCIÓN: ELIMINAR ---
+  const eliminarDelCarrito = (indexAEliminar: number) => {
+    setCarrito(carrito.filter((_, index) => index !== indexAEliminar));
   };
 
   const totalPrecio = carrito.reduce((acc, item) => acc + item.price, 0);
@@ -42,6 +45,7 @@ export default function Home() {
         </button>
       </nav>
 
+      {/* Resumen del Carrito con botón eliminar */}
       {mostrarResumen && (
         <div className="fixed right-6 top-24 w-80 bg-white shadow-2xl rounded-2xl p-6 z-[60] border border-gray-100 animate-in fade-in slide-in-from-top-4 duration-300">
           <div className="flex justify-between items-center mb-4 border-b pb-2 text-gray-800 font-bold text-lg">
@@ -49,14 +53,24 @@ export default function Home() {
             <button onClick={() => setMostrarResumen(false)} className="text-gray-400">✕</button>
           </div>
           {carrito.length === 0 ? (
-            <p className="text-gray-500 text-center py-4 italic">Tu carrito está esperando un mate...</p>
+            <p className="text-gray-500 text-center py-4 italic">Tu carrito está vacío...</p>
           ) : (
             <>
               <div className="max-h-60 overflow-y-auto mb-4 space-y-2">
                 {carrito.map((item, index) => (
-                  <div key={index} className="flex justify-between text-sm border-b border-gray-50 pb-1">
-                    <span className="text-gray-600">{item.name}</span>
-                    <span className="font-bold text-gray-800">${item.price.toLocaleString('es-AR')}</span>
+                  <div key={index} className="flex justify-between items-center text-sm border-b border-gray-50 pb-1">
+                    <div className="flex flex-col">
+                      <span className="text-gray-600 font-medium">{item.name}</span>
+                      <span className="font-bold text-gray-800">${item.price.toLocaleString('es-AR')}</span>
+                    </div>
+                    {/* Botón Tachito de Basura */}
+                    <button 
+                      onClick={() => eliminarDelCarrito(index)}
+                      className="text-red-400 hover:text-red-600 p-1 transition-colors"
+                      title="Eliminar producto"
+                    >
+                      🗑️
+                    </button>
                   </div>
                 ))}
               </div>
