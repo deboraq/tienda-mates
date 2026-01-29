@@ -140,18 +140,21 @@ export default function Home() {
       <header className="py-20 text-center bg-white border-b border-gray-100">
         <h2 className="text-6xl md:text-8xl font-bold text-gray-800 mb-4 tracking-tighter">Nómade Mates</h2>
         <p className="text-xl md:text-2xl text-gray-500 italic">"Uniendo rincones, cebando historias"</p>
+        {categoriaSeleccionada !== "Todos" && (
+          <p className="mt-4 text-[#4a5d23] font-bold uppercase tracking-widest text-sm bg-amber-50 inline-block px-4 py-1 rounded-full">
+            Filtrando por: {categoriaSeleccionada}
+          </p>
+        )}
       </header>
 
       {/* PERSONALIZADOS */}
       <section className="bg-amber-50 py-12 text-center border-y border-amber-100">
         <h3 className="text-2xl font-bold mb-2">✨ Personalizá tu producto</h3>
         <p className="text-gray-600 px-4">Grabados láser, nombres y logos. ¡Hacé que tu mate sea único!</p>
-        <button className="mt-4 bg-[#8b4513] text-white px-8 py-3 rounded-full font-bold hover:scale-105 transition-transform">
-          Consultar por grabados
-        </button>
+        <button className="mt-4 bg-[#8b4513] text-white px-8 py-3 rounded-full font-bold">Consultar por grabados</button>
       </section>
 
-      {/* CATÁLOGO */}
+      {/* --- CATÁLOGO FILTRADO --- */}
       <section id="productos" className="max-w-6xl mx-auto p-4 pt-16 grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
         {productosFiltrados.map((producto) => (
           <div key={producto.id} className="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 flex flex-col hover:shadow-2xl transition-all">
@@ -164,26 +167,37 @@ export default function Home() {
                 <p className="text-gray-500 text-sm mb-4">{producto.description}</p>
                 <p className="text-3xl font-black text-[#4a5d23] mb-6">${producto.price.toLocaleString('es-AR')}</p>
               </div>
-              <button onClick={() => agregarAlCarrito(producto)} className="w-full bg-[#4a5d23] text-white py-3 rounded-2xl font-bold active:scale-95 transition-transform">
-                Agregar al Carrito
-              </button>
+              <button onClick={() => agregarAlCarrito(producto)} className="w-full bg-[#4a5d23] text-white py-3 rounded-2xl font-bold">Agregar al Carrito</button>
             </div>
           </div>
         ))}
+
+        {/* --- MENSAJE CUANDO NO HAY STOCK --- */}
+        {productosFiltrados.length === 0 && (
+          <div className="col-span-full text-center py-20 bg-white rounded-3xl border-2 border-dashed border-gray-100">
+             <p className="text-gray-500 text-xl italic mb-4">No encontramos productos en la categoría "{categoriaSeleccionada}".</p>
+             <button 
+               onClick={() => {setCategoriaSeleccionada("Todos"); setBusqueda("");}}
+               className="bg-[#4a5d23] text-white px-6 py-2 rounded-full font-bold hover:bg-[#3a4a1c] transition-colors"
+             >
+               Ver todos los productos
+             </button>
+          </div>
+        )}
       </section>
 
       {/* NUESTRA ESENCIA */}
       <section id="nosotros" className="bg-[#4a5d23] text-white py-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h3 className="text-4xl font-serif font-bold mb-8">Nuestra Esencia</h3>
-          <p className="text-xl md:text-2xl leading-relaxed opacity-90 italic font-light px-4">
+          <p className="text-xl md:text-2xl leading-relaxed opacity-90 italic px-4">
             "Somos apasionados de la cultura matera nacidos en Córdoba. En Nómade, creemos que el mate es el único objeto capaz de habitar dos lugares al mismo tiempo: el rincón donde estamos y la historia que estamos construyendo."
           </p>
         </div>
       </section>
 
       {/* PREGUNTAS FRECUENTES */}
-      <section className="max-w-4xl mx-auto py-20 px-6 text-left">
+      <section className="max-w-4xl mx-auto py-20 px-6">
         <h3 className="text-3xl font-bold text-center mb-12">Preguntas Frecuentes</h3>
         <div className="space-y-6">
           <div className="border-b pb-4">
@@ -197,8 +211,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FOOTER / CONTACTO COMPLETO */}
-      <footer id="contacto" className="bg-white border-t border-gray-100 py-16 px-6 text-center md:text-left">
+      {/* FOOTER */}
+      <footer id="contacto" className="bg-white border-t border-gray-100 py-16 px-6">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
           <div>
             <h4 className="font-bold mb-4 text-xl text-[#4a5d23]">Contacto</h4>
@@ -219,7 +233,7 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* Botón WhatsApp Flotante */}
+      {/* WhatsApp Flotante */}
       <a
         href="https://wa.me/5493515416836"
         target="_blank"
