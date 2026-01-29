@@ -9,7 +9,7 @@ export const PRODUCTS = [
   },
   {
     id: 2,
-    name: "Set Matero Edición Black",
+    name: "Termo Edición Black",
     price: 95000,
     category: "Set Materos", // <--- Agregamos esto
     description: "Acero inoxidable, mantiene 24hs el calor.",
