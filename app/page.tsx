@@ -7,16 +7,21 @@ import confetti from "canvas-confetti";
 export default function Home() {
   const [carrito, setCarrito] = useState<any[]>([]);
   const [mostrarResumen, setMostrarResumen] = useState(false);
+  const [busqueda, setBusqueda] = useState(""); // Estado para el buscador
+
+  // Lógica de filtrado de productos
+  const productosFiltrados = PRODUCTS.filter(p => 
+    p.name.toLowerCase().includes(busqueda.toLowerCase()) || 
+    p.description.toLowerCase().includes(busqueda.toLowerCase())
+  );
 
   const agregarAlCarrito = (producto: any) => {
     setCarrito([...carrito, producto]);
-    
-    // Confeti optimizado para mobile y web
     confetti({
       particleCount: 60,
       spread: 70,
       origin: { x: 0.5, y: 0.7 },
-      colors: ['#4a5d23', '#8b4513', '#fdfcf0'], // Verdes y marrones madera
+      colors: ['#4a5d23', '#8b4513', '#fdfcf0'],
       zIndex: 9999
     });
   };
@@ -31,23 +36,20 @@ export default function Home() {
     if (carrito.length === 0) return;
     const numeroTelefono = "5493515416836"; 
     const listaProductos = carrito.map(item => `- ${item.name} ($${item.price})`).join("%0A");
-    
-    // Nombre actualizado en el mensaje de WhatsApp
     const mensaje = `¡Hola! Quiero realizar un pedido en *Nómade Mates*:%0A%0A${listaProductos}%0A%0A*Total: $${totalPrecio}*%0A%0A¿Cómo coordinamos el pago y envío?`;
-    
     window.open(`https://wa.me/${numeroTelefono}?text=${mensaje}`, "_blank");
   };
 
   return (
     <main className="min-h-screen bg-[#fdfcf0] pb-20 font-sans">
-      {/* Navbar con nuevo nombre */}
+      {/* Navbar con "Tu Carrito" */}
       <nav className="bg-[#4a5d23] text-white p-6 shadow-md flex justify-between items-center sticky top-0 z-50">
         <h1 className="text-2xl font-bold font-serif tracking-tight">🍂 Nómade Mates</h1>
         <button 
           onClick={() => setMostrarResumen(!mostrarResumen)}
           className="bg-white text-[#4a5d23] px-5 py-2 rounded-full font-bold shadow-md active:scale-90 transition-all flex items-center gap-2"
         >
-          🛒 ({carrito.length})
+          🛒 Tu Carrito ({carrito.length})
         </button>
       </nav>
 
@@ -77,10 +79,7 @@ export default function Home() {
                 <span>TOTAL:</span>
                 <span>${totalPrecio.toLocaleString('es-AR')}</span>
               </div>
-              <button 
-                onClick={finalizarPedido}
-                className="w-full bg-[#4a5d23] text-white py-4 rounded-xl font-bold active:bg-[#3a4a1c] shadow-lg"
-              >
+              <button onClick={finalizarPedido} className="w-full bg-[#4a5d23] text-white py-4 rounded-xl font-bold active:bg-[#3a4a1c] shadow-lg">
                 Finalizar en WhatsApp
               </button>
             </>
@@ -88,37 +87,56 @@ export default function Home() {
         </div>
       )}
 
-      {/* Header con nuevo nombre */}
+      {/* Header */}
       <header className="py-16 text-center px-4">
-        <h2 className="text-5xl md:text-7xl font-black text-gray-800 mb-4 tracking-tighter uppercase italic">Nómade Mates</h2>
-        <p className="text-lg text-gray-600 font-light tracking-[0.2em] uppercase">Uniendo rincones, cebando historias</p>
+        <h2 className="text-5xl md:text-6xl font-bold text-gray-800 mb-4 tracking-tight">Nómade Mates</h2>
+        <p className="text-xl md:text-2xl text-gray-600 italic font-medium">"Uniendo rincones, cebando historias"</p>
       </header>
 
-      {/* Catálogo */}
-      <section className="max-w-6xl mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-8">
-        {PRODUCTS.map((producto) => (
-          <div key={producto.id} className="bg-white rounded-[2rem] overflow-hidden shadow-xl border border-gray-100 flex flex-col">
-            <div className="h-64 overflow-hidden">
-              <img src={producto.image} alt={producto.name} className="w-full h-full object-cover" />
-            </div>
-            <div className="p-6 text-center flex-grow flex flex-col justify-between">
-              <div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">{producto.name}</h3>
-                <p className="text-gray-500 text-xs mb-4">{producto.description}</p>
-                <p className="text-3xl font-black text-[#4a5d23] mb-6">${producto.price.toLocaleString('es-AR')}</p>
-              </div>
-              <button 
-                onClick={() => agregarAlCarrito(producto)}
-                className="w-full bg-[#4a5d23] text-white py-4 rounded-2xl font-bold active:scale-95 transition-all shadow-md"
-              >
-                Agregar al Carrito
-              </button>
-            </div>
-          </div>
-        ))}
+      {/* Buscador con Lupa */}
+      <section className="max-w-xl mx-auto px-4 mb-12">
+        <div className="relative">
+          <span className="absolute inset-y-0 left-4 flex items-center text-gray-400">
+            🔍
+          </span>
+          <input 
+            type="text"
+            placeholder="¿Qué estás buscando?"
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+            className="w-full pl-12 pr-4 py-4 rounded-2xl border-2 border-gray-100 bg-white shadow-sm focus:border-[#4a5d23] focus:outline-none transition-all text-gray-800"
+          />
+        </div>
       </section>
 
-      {/* Botón WhatsApp */}
+      {/* Catálogo Filtrado */}
+      <section className="max-w-6xl mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+        {productosFiltrados.length > 0 ? (
+          productosFiltrados.map((producto) => (
+            <div key={producto.id} className="bg-white rounded-[2rem] overflow-hidden shadow-xl border border-gray-100 flex flex-col hover:shadow-2xl transition-all duration-300">
+              <div className="h-64 overflow-hidden">
+                <img src={producto.image} alt={producto.name} className="w-full h-full object-cover" />
+              </div>
+              <div className="p-6 text-center flex-grow flex flex-col justify-between">
+                <div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">{producto.name}</h3>
+                  <p className="text-gray-500 text-xs mb-4">{producto.description}</p>
+                  <p className="text-3xl font-black text-[#4a5d23] mb-6">${producto.price.toLocaleString('es-AR')}</p>
+                </div>
+                <button onClick={() => agregarAlCarrito(producto)} className="w-full bg-[#4a5d23] text-white py-4 rounded-2xl font-bold active:scale-95 transition-all shadow-md">
+                  Agregar al Carrito
+                </button>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="col-span-full text-center py-10">
+            <p className="text-gray-500 text-lg italic">No encontramos productos que coincidan con tu búsqueda...</p>
+          </div>
+        )}
+      </section>
+
+      {/* Botón WhatsApp Flotante */}
       <a
         href="https://wa.me/5493515416836?text=Hola!%20Tengo%20una%20consulta"
         target="_blank"
