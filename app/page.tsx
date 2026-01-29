@@ -11,17 +11,13 @@ export default function Home() {
   const agregarAlCarrito = (producto: any) => {
     setCarrito([...carrito, producto]);
     
-    // --- AJUSTE PARA CELULARES ---
-    // Disparamos dos ráfagas de confeti para que se vea bien en pantallas verticales
-    const duracion = 3 * 1000;
-    const end = Date.now() + duracion;
-
+    // Confeti optimizado para mobile y web
     confetti({
-      particleCount: 50,
-      spread: 60,
-      origin: { x: 0.5, y: 0.7 }, // Un poco más arriba del botón para que no lo tape el dedo
-      colors: ['#4a5d23', '#25d366', '#fdfcf0'],
-      zIndex: 9999 // Nos aseguramos de que vuele por encima de todo
+      particleCount: 60,
+      spread: 70,
+      origin: { x: 0.5, y: 0.7 },
+      colors: ['#4a5d23', '#8b4513', '#fdfcf0'], // Verdes y marrones madera
+      zIndex: 9999
     });
   };
 
@@ -35,22 +31,27 @@ export default function Home() {
     if (carrito.length === 0) return;
     const numeroTelefono = "5493515416836"; 
     const listaProductos = carrito.map(item => `- ${item.name} ($${item.price})`).join("%0A");
-    const mensaje = `¡Hola! Quiero realizar el siguiente pedido desde la web:%0A%0A${listaProductos}%0A%0A*Total: $${totalPrecio}*%0A%0A¿Cómo coordinamos el pago?`;
+    
+    // Nombre actualizado en el mensaje de WhatsApp
+    const mensaje = `¡Hola! Quiero realizar un pedido en *Nómade Mates*:%0A%0A${listaProductos}%0A%0A*Total: $${totalPrecio}*%0A%0A¿Cómo coordinamos el pago y envío?`;
+    
     window.open(`https://wa.me/${numeroTelefono}?text=${mensaje}`, "_blank");
   };
 
   return (
     <main className="min-h-screen bg-[#fdfcf0] pb-20 font-sans">
+      {/* Navbar con nuevo nombre */}
       <nav className="bg-[#4a5d23] text-white p-6 shadow-md flex justify-between items-center sticky top-0 z-50">
-        <h1 className="text-2xl font-bold font-serif">🧉 Matería Premium</h1>
+        <h1 className="text-2xl font-bold font-serif tracking-tight">🍂 Nómade Mates</h1>
         <button 
           onClick={() => setMostrarResumen(!mostrarResumen)}
           className="bg-white text-[#4a5d23] px-5 py-2 rounded-full font-bold shadow-md active:scale-90 transition-all flex items-center gap-2"
         >
-          🛒 Mi Carrito ({carrito.length})
+          🛒 ({carrito.length})
         </button>
       </nav>
 
+      {/* Carrito flotante */}
       {mostrarResumen && (
         <div className="fixed inset-x-4 top-24 md:left-auto md:right-6 md:w-80 bg-white shadow-2xl rounded-2xl p-6 z-[60] border border-gray-100">
           <div className="flex justify-between items-center mb-4 border-b pb-2 text-gray-800 font-bold text-lg">
@@ -58,7 +59,7 @@ export default function Home() {
             <button onClick={() => setMostrarResumen(false)} className="text-gray-400 p-2">✕</button>
           </div>
           {carrito.length === 0 ? (
-            <p className="text-gray-500 text-center py-4 italic">Tu carrito está vacío...</p>
+            <p className="text-gray-500 text-center py-4 italic">El carrito está vacío...</p>
           ) : (
             <>
               <div className="max-h-60 overflow-y-auto mb-4 space-y-2">
@@ -68,12 +69,7 @@ export default function Home() {
                       <span className="text-gray-600 font-medium">{item.name}</span>
                       <span className="font-bold text-gray-800">${item.price.toLocaleString('es-AR')}</span>
                     </div>
-                    <button 
-                      onClick={() => eliminarDelCarrito(index)}
-                      className="text-xl p-2"
-                    >
-                      🗑️
-                    </button>
+                    <button onClick={() => eliminarDelCarrito(index)} className="text-xl p-2">🗑️</button>
                   </div>
                 ))}
               </div>
@@ -85,18 +81,20 @@ export default function Home() {
                 onClick={finalizarPedido}
                 className="w-full bg-[#4a5d23] text-white py-4 rounded-xl font-bold active:bg-[#3a4a1c] shadow-lg"
               >
-                Enviar pedido por WhatsApp
+                Finalizar en WhatsApp
               </button>
             </>
           )}
         </div>
       )}
 
+      {/* Header con nuevo nombre */}
       <header className="py-16 text-center px-4">
-        <h2 className="text-5xl md:text-6xl font-black text-gray-800 mb-4 tracking-tighter">Materia Criolla</h2>
-        <p className="text-lg text-gray-600 italic">De Córdoba para todo el país 🇦🇷</p>
+        <h2 className="text-5xl md:text-7xl font-black text-gray-800 mb-4 tracking-tighter uppercase italic">Nómade</h2>
+        <p className="text-lg text-gray-600 font-light tracking-[0.2em] uppercase">Mates & Compañía</p>
       </header>
 
+      {/* Catálogo */}
       <section className="max-w-6xl mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-8">
         {PRODUCTS.map((producto) => (
           <div key={producto.id} className="bg-white rounded-[2rem] overflow-hidden shadow-xl border border-gray-100 flex flex-col">
@@ -120,6 +118,7 @@ export default function Home() {
         ))}
       </section>
 
+      {/* Botón WhatsApp */}
       <a
         href="https://wa.me/5493515416836?text=Hola!%20Tengo%20una%20consulta"
         target="_blank"
