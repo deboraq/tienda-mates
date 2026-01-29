@@ -11,7 +11,7 @@ export default function Home() {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todos");
   const [mostrarCategorias, setMostrarCategorias] = useState(false);
   
-  // Estado para alternar entre Inicio y Catálogo Completo
+  // Control de vista: Inicio o Tienda
   const [verTienda, setVerTienda] = useState(false);
 
   const categorias = ["Todos", "Mates", "Termos", "Bombillas", "Yerberas", "Set Materos", "Despolvillador"];
@@ -23,8 +23,8 @@ export default function Home() {
     return coincideBusqueda && coincideCategoria;
   });
 
-  // Mostramos los primeros 3 para la sección de Promos en la Home
-  const productosPromocion = PRODUCTS.slice(0, 3);
+  // Los 3 destacados de la Home
+  const productosDestacados = PRODUCTS.slice(0, 3);
 
   const agregarAlCarrito = (producto: any) => {
     setCarrito([...carrito, producto]);
@@ -59,6 +59,10 @@ export default function Home() {
 
           <div className="hidden md:flex gap-6 text-xs uppercase tracking-widest font-medium">
             <button onClick={() => setVerTienda(false)} className="hover:text-amber-200 uppercase transition-colors">Inicio</button>
+            
+            {/* BOTÓN NOSOTROS */}
+            <a href="#nosotros" onClick={() => setVerTienda(false)} className="hover:text-amber-200 transition-colors uppercase">Nosotros</a>
+            
             <div className="relative">
               <button 
                 onClick={() => setMostrarCategorias(!mostrarCategorias)}
@@ -118,14 +122,14 @@ export default function Home() {
 
       {/* --- CONTENIDO DINÁMICO --- */}
       {!verTienda ? (
-        /* VISTA HOME */
+        /* VISTA HOME: Aquí está TODO lo que me pediste */
         <>
           <header className="py-20 text-center bg-white border-b border-gray-100">
             <h2 className="text-6xl md:text-8xl font-bold text-gray-800 mb-4 tracking-tighter">Nómade Mates</h2>
             <p className="text-xl md:text-2xl text-gray-500 italic">"Uniendo rincones, cebando historias"</p>
           </header>
 
-          {/* PERSONALIZADOS (RESTAURADO) */}
+          {/* PERSONALIZADOS */}
           <section className="bg-amber-50 py-12 text-center border-y border-amber-100">
             <h3 className="text-2xl font-bold mb-2">✨ Personalizá tu producto</h3>
             <p className="text-gray-600 px-4">Grabados láser, nombres y logos. ¡Hacé que tu mate sea único!</p>
@@ -134,16 +138,16 @@ export default function Home() {
             </button>
           </section>
 
-          {/* SECCIÓN PROMOS */}
-          <section id="promos" className="max-w-6xl mx-auto p-4 pt-16 text-center">
-            <h3 className="text-3xl font-bold mb-10">🔥 Promociones Destacadas</h3>
+          {/* PRODUCTOS DESTACADOS */}
+          <section id="destacados" className="max-w-6xl mx-auto p-4 pt-16 text-center">
+            <h3 className="text-3xl font-bold mb-10">🔥 Productos Destacados</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {productosPromocion.map((producto) => (
+              {productosDestacados.map((producto) => (
                 <div key={producto.id} className="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 p-4 hover:shadow-2xl transition-all">
                   <img src={producto.image} className="h-48 w-full object-cover rounded-2xl mb-4" />
                   <h4 className="text-xl font-bold">{producto.name}</h4>
                   <p className="text-2xl font-black text-[#4a5d23] my-4">${producto.price.toLocaleString('es-AR')}</p>
-                  <button onClick={() => agregarAlCarrito(producto)} className="w-full bg-[#4a5d23] text-white py-2 rounded-xl font-bold active:scale-95 transition-all">Agregar al Carrito</button>
+                  <button onClick={() => agregarAlCarrito(producto)} className="w-full bg-[#4a5d23] text-white py-2 rounded-xl font-bold">Agregar al Carrito</button>
                 </div>
               ))}
             </div>
@@ -155,7 +159,7 @@ export default function Home() {
             </button>
           </section>
 
-          {/* QUIÉNES SOMOS / ESENCIA (RESTAURADO) */}
+          {/* NUESTRA ESENCIA / QUIÉNES SOMOS */}
           <section id="nosotros" className="bg-[#4a5d23] text-white py-20 px-6 mt-20">
             <div className="max-w-4xl mx-auto text-center">
               <h3 className="text-4xl font-serif font-bold mb-8">Nuestra Esencia</h3>
@@ -177,14 +181,12 @@ export default function Home() {
               <input 
                 type="text" 
                 placeholder="Buscar en la tienda..." 
-                className="w-full pl-10 pr-4 py-2.5 rounded-full border-2 border-gray-200 outline-none focus:border-[#4a5d23] transition-all"
+                className="w-full pl-10 pr-4 py-2.5 rounded-full border-2 border-gray-200 outline-none focus:border-[#4a5d23]"
                 onChange={(e) => setBusqueda(e.target.value)}
               />
             </div>
           </div>
-          
           <h3 className="text-4xl font-bold mb-8 text-gray-800">Catálogo: {categoriaSeleccionada}</h3>
-          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
             {productosFiltrados.map((producto) => (
               <div key={producto.id} className="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 flex flex-col hover:shadow-2xl transition-all">
@@ -197,37 +199,30 @@ export default function Home() {
                     <p className="text-gray-500 text-sm mb-4">{producto.description}</p>
                     <p className="text-3xl font-black text-[#4a5d23] mb-6">${producto.price.toLocaleString('es-AR')}</p>
                   </div>
-                  <button onClick={() => agregarAlCarrito(producto)} className="w-full bg-[#4a5d23] text-white py-3 rounded-2xl font-bold shadow-md active:scale-95 transition-all">Agregar al Carrito</button>
+                  <button onClick={() => agregarAlCarrito(producto)} className="w-full bg-[#4a5d23] text-white py-3 rounded-2xl font-bold">Agregar al Carrito</button>
                 </div>
               </div>
             ))}
           </div>
-
-          {/* MENSAJE SIN RESULTADOS */}
-          {productosFiltrados.length === 0 && (
-            <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-gray-200">
-              <p className="text-gray-500 text-lg italic">No encontramos lo que buscás en esta categoría.</p>
-              <button onClick={() => setCategoriaSeleccionada("Todos")} className="mt-4 text-[#4a5d23] font-bold">Mostrar todos los productos</button>
-            </div>
-          )}
         </section>
       )}
 
-      {/* --- SECCIONES SIEMPRE VISIBLES --- */}
+      {/* PREGUNTAS FRECUENTES (SIEMPRE VISIBLES) */}
       <section className="max-w-4xl mx-auto py-20 px-6">
         <h3 className="text-3xl font-bold text-center mb-12">Preguntas Frecuentes</h3>
         <div className="space-y-6">
           <div className="border-b pb-4">
             <h4 className="font-bold text-lg mb-2">¿Cómo comprar?</h4>
-            <p className="text-gray-600 text-sm">Elegí tus productos, agregalos al carrito y finalizá el pedido por WhatsApp. Coordinamos pago y envío por ahí.</p>
+            <p className="text-gray-600 text-sm">Elegí tus productos, agregalos al carrito y finalizá el pedido por WhatsApp.</p>
           </div>
           <div className="border-b pb-4">
             <h4 className="font-bold text-lg mb-2">Envíos</h4>
-            <p className="text-gray-600 text-sm">Hacemos envíos a todo el país a través de Correo Argentino y cadetería privada en Córdoba Capital.</p>
+            <p className="text-gray-600 text-sm">Hacemos envíos a todo el país a través de Correo Argentino.</p>
           </div>
         </div>
       </section>
 
+      {/* FOOTER COMPLETO */}
       <footer id="contacto" className="bg-white border-t border-gray-100 py-16 px-6">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
           <div>
@@ -238,8 +233,8 @@ export default function Home() {
           <div>
             <h4 className="font-bold mb-4 text-xl text-[#4a5d23]">Redes Sociales</h4>
             <div className="flex justify-center md:justify-start gap-4">
-              <a href="#" className="bg-gray-100 p-2 rounded-lg hover:bg-amber-100 transition-colors">Instagram</a>
-              <a href="#" className="bg-gray-100 p-2 rounded-lg hover:bg-amber-100 transition-colors">Facebook</a>
+              <a href="https://instagram.com/nomademates" target="_blank" className="bg-gray-100 p-2 rounded-lg hover:bg-amber-100 transition-colors">Instagram</a>
+              <a href="https://facebook.com/nomademates" target="_blank" className="bg-gray-100 p-2 rounded-lg hover:bg-amber-100 transition-colors">Facebook</a>
             </div>
           </div>
           <div>
@@ -249,8 +244,7 @@ export default function Home() {
         </div>
       </footer>
       
-      {/* Botón WhatsApp Fijo */}
-      <a href="https://wa.me/5493515416836" target="_blank" className="fixed bottom-6 left-6 bg-[#25d366] text-white p-4 rounded-full shadow-2xl z-[100] hover:scale-110 transition-transform">
+      <a href="https://wa.me/5493515416836" target="_blank" rel="noopener noreferrer" className="fixed bottom-6 left-6 bg-[#25d366] text-white p-4 rounded-full shadow-2xl z-[100] hover:scale-110 transition-transform">
         <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       </a>
     </main>
