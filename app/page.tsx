@@ -90,8 +90,8 @@ export default function Home() {
 
       {/* Header con nuevo nombre */}
       <header className="py-16 text-center px-4">
-        <h2 className="text-5xl md:text-7xl font-black text-gray-800 mb-4 tracking-tighter uppercase italic">Nómade</h2>
-        <p className="text-lg text-gray-600 font-light tracking-[0.2em] uppercase">Mates & Compañía</p>
+        <h2 className="text-5xl md:text-7xl font-black text-gray-800 mb-4 tracking-tighter uppercase italic">Nómade Mates</h2>
+        <p className="text-lg text-gray-600 font-light tracking-[0.2em] uppercase">Uniendo rincones, cebando historias</p>
       </header>
 
       {/* Catálogo */}
