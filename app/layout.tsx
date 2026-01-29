@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Matería Criolla | Córdoba",
-  description: "Tienda artesanal de mates imperiales y termos",
+  title: "Nómade Mates | Tienda Oficial",
+  description: "Mates artesanales y accesorios para tu aventura",
 };
 
 export default function RootLayout({
