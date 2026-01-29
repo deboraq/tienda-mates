@@ -50,7 +50,6 @@ export default function Home() {
       {/* --- NAVBAR --- */}
       <nav className="bg-[#4a5d23] text-white p-4 shadow-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
-          
           <div className="flex items-center gap-4">
             <h1 className="text-xl md:text-2xl font-bold font-serif whitespace-nowrap">🍂 Nómade Mates</h1>
             <div className="hidden lg:relative lg:block">
@@ -67,8 +66,6 @@ export default function Home() {
           <div className="hidden md:flex gap-6 text-xs uppercase tracking-widest font-medium">
             <a href="#nosotros" className="hover:text-amber-200 transition-colors">Nosotros</a>
             <a href="#promos" className="hover:text-amber-200 transition-colors">Promos</a>
-            
-            {/* PRODUCTOS CON DESPLEGABLE */}
             <div className="relative">
               <button 
                 onClick={() => setMostrarCategorias(!mostrarCategorias)}
@@ -76,7 +73,6 @@ export default function Home() {
               >
                 Productos {mostrarCategorias ? '▴' : '▾'}
               </button>
-              
               {mostrarCategorias && (
                 <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-50 text-gray-800 normal-case tracking-normal font-sans">
                   {categorias.map((cat) => (
@@ -95,21 +91,10 @@ export default function Home() {
                 </div>
               )}
             </div>
-
             <a href="#contacto" className="hover:text-amber-200 transition-colors">Contacto</a>
           </div>
 
           <div className="flex items-center gap-3">
-             <div className="relative block lg:hidden w-32 md:w-48">
-              <input 
-                type="text" 
-                placeholder="Buscar..." 
-                className="w-full pl-8 pr-3 py-1.5 rounded-full bg-white/10 border border-white/20 focus:bg-white focus:text-gray-800 outline-none transition-all text-xs"
-                onChange={(e) => setBusqueda(e.target.value)}
-              />
-              <span className="absolute inset-y-0 left-2.5 flex items-center text-gray-400 text-xs">🔍</span>
-            </div>
-
             <button 
               onClick={() => setMostrarResumen(!mostrarResumen)}
               className="bg-white text-[#4a5d23] px-4 py-2 rounded-full font-bold shadow-md text-sm active:scale-95 transition-all whitespace-nowrap"
@@ -151,18 +136,13 @@ export default function Home() {
         </div>
       )}
 
-      {/* --- HEADER --- */}
+      {/* HEADER */}
       <header className="py-20 text-center bg-white border-b border-gray-100">
         <h2 className="text-6xl md:text-8xl font-bold text-gray-800 mb-4 tracking-tighter">Nómade Mates</h2>
         <p className="text-xl md:text-2xl text-gray-500 italic">"Uniendo rincones, cebando historias"</p>
-        {categoriaSeleccionada !== "Todos" && (
-          <p className="mt-4 text-[#4a5d23] font-bold uppercase tracking-widest text-sm bg-amber-50 inline-block px-4 py-1 rounded-full animate-bounce">
-            Filtrando por: {categoriaSeleccionada}
-          </p>
-        )}
       </header>
 
-      {/* --- SECCIÓN PERSONALIZADOS --- */}
+      {/* PERSONALIZADOS */}
       <section className="bg-amber-50 py-12 text-center border-y border-amber-100">
         <h3 className="text-2xl font-bold mb-2">✨ Personalizá tu producto</h3>
         <p className="text-gray-600 px-4">Grabados láser, nombres y logos. ¡Hacé que tu mate sea único!</p>
@@ -171,7 +151,7 @@ export default function Home() {
         </button>
       </section>
 
-      {/* --- CATÁLOGO FILTRADO --- */}
+      {/* CATÁLOGO */}
       <section id="productos" className="max-w-6xl mx-auto p-4 pt-16 grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
         {productosFiltrados.map((producto) => (
           <div key={producto.id} className="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 flex flex-col hover:shadow-2xl transition-all">
@@ -190,20 +170,9 @@ export default function Home() {
             </div>
           </div>
         ))}
-        {productosFiltrados.length === 0 && (
-          <div className="col-span-full text-center py-20">
-             <p className="text-gray-500 text-xl italic mb-4">No encontramos lo que buscás en {categoriaSeleccionada}.</p>
-             <button 
-               onClick={() => {setCategoriaSeleccionada("Todos"); setBusqueda("");}}
-               className="text-[#4a5d23] font-bold underline"
-             >
-               Ver todos los productos
-             </button>
-          </div>
-        )}
       </section>
 
-      {/* --- NUESTRA ESENCIA --- */}
+      {/* NUESTRA ESENCIA */}
       <section id="nosotros" className="bg-[#4a5d23] text-white py-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h3 className="text-4xl font-serif font-bold mb-8">Nuestra Esencia</h3>
@@ -213,9 +182,24 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- FOOTER / CONTACTO COMPLETO --- */}
+      {/* PREGUNTAS FRECUENTES */}
+      <section className="max-w-4xl mx-auto py-20 px-6 text-left">
+        <h3 className="text-3xl font-bold text-center mb-12">Preguntas Frecuentes</h3>
+        <div className="space-y-6">
+          <div className="border-b pb-4">
+            <h4 className="font-bold text-lg mb-2">¿Cómo comprar?</h4>
+            <p className="text-gray-600 text-sm">Elegí tus productos, agregalos al carrito y finalizá el pedido por WhatsApp. Coordinamos pago y envío por ahí.</p>
+          </div>
+          <div className="border-b pb-4">
+            <h4 className="font-bold text-lg mb-2">Envíos</h4>
+            <p className="text-gray-600 text-sm">Hacemos envíos a todo el país a través de Correo Argentino y cadetería privada en Córdoba Capital.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER / CONTACTO COMPLETO */}
       <footer id="contacto" className="bg-white border-t border-gray-100 py-16 px-6 text-center md:text-left">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
           <div>
             <h4 className="font-bold mb-4 text-xl text-[#4a5d23]">Contacto</h4>
             <p className="text-gray-600">WhatsApp: +54 9 351 541-6836</p>
@@ -243,4 +227,9 @@ export default function Home() {
         className="fixed bottom-6 left-6 bg-[#25d366] text-white p-4 rounded-full shadow-2xl z-[100] hover:scale-110 transition-transform"
       >
         <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+      </a>
+    </main>
+  );
+}
